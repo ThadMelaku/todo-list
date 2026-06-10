@@ -4,6 +4,7 @@ import {
   getProjects,
   addProject,
   addTodoToProject,
+  deleteTodo,
 } from "./appController.js";
 
 import { renderProjects } from "./domController.js";
@@ -20,4 +21,13 @@ addTodoToProject(
   "high"
 );
 
-renderProjects(getProjects());
+function renderApp() {
+  renderProjects(getProjects(), handleDeleteTodo);
+}
+
+function handleDeleteTodo(projectId, todoId) {
+  deleteTodo(projectId, todoId);
+  renderApp();
+}
+
+renderApp();

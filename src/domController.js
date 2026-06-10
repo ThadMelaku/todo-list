@@ -1,4 +1,4 @@
-export function renderProjects(projects) {
+export function renderProjects(projects, onDeleteTodo) {
   const content = document.querySelector("#content");
 
   content.textContent = "";
@@ -14,8 +14,18 @@ export function renderProjects(projects) {
     project.todos.forEach((todo) => {
       const todoDiv = document.createElement("div");
 
-      todoDiv.textContent =
-        `${todo.title} (${todo.priority})`;
+      const todoText = document.createElement("span");
+      todoText.textContent = `${todo.title} (${todo.priority})`;
+
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "Delete";
+
+      deleteButton.addEventListener("click", () => {
+        onDeleteTodo(project.id, todo.id);
+      });
+
+      todoDiv.appendChild(todoText);
+      todoDiv.appendChild(deleteButton);
 
       projectDiv.appendChild(todoDiv);
     });
