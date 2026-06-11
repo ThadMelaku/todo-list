@@ -15,15 +15,19 @@ export function renderProjects(
 
   projects.forEach((project) => {
     const projectDiv = document.createElement("div");
+    projectDiv.classList.add("project");
 
     const projectTitle = document.createElement("h2");
+    projectTitle.classList.add("project-title");
     projectTitle.textContent = project.name;
 
     const projectButton = document.createElement("button");
+    projectButton.classList.add("project-button");
     projectButton.textContent = project.name;
 
     if (project.id === activeProjectId) {
       projectButton.textContent = `${project.name} (active)`;
+      projectButton.classList.add("active-project");
     }
 
     projectButton.addEventListener("click", () => {
@@ -40,8 +44,11 @@ export function renderProjects(
 
     project.todos.forEach((todo) => {
       const todoDiv = document.createElement("div");
+      todoDiv.classList.add("todo-item");
+      todoDiv.classList.add(`priority-${todo.priority}`);
 
       const checkbox = document.createElement("input");
+      checkbox.classList.add("todo-checkbox");
       checkbox.type = "checkbox";
       checkbox.checked = todo.completed;
 
@@ -50,12 +57,19 @@ export function renderProjects(
       });
 
       const todoText = document.createElement("span");
+      todoText.classList.add("todo-title");
       todoText.textContent = `${todo.title} (${todo.priority})`;
+
+      if (todo.completed) {
+        todoText.classList.add("completed");
+      }
+
       todoText.addEventListener("click", () => {
         onToggleDetails(project.id, todo.id);
       });
 
       const deleteButton = document.createElement("button");
+      deleteButton.classList.add("delete-button");
       deleteButton.textContent = "Delete";
       deleteButton.addEventListener("click", () => {
         onDeleteTodo(project.id, todo.id);
@@ -67,11 +81,15 @@ export function renderProjects(
 
       if (todo.expanded) {
         const detailsDiv = document.createElement("div");
+        detailsDiv.classList.add("todo-details");
 
         const description = document.createElement("p");
+        description.classList.add("todo-description");
         description.textContent = `Description: ${todo.description}`;
 
         const dueDate = document.createElement("p");
+        dueDate.classList.add("todo-due-date");
+
         if (todo.dueDate) {
           dueDate.textContent = `Due: ${format(parseISO(todo.dueDate), "MMM d, yyyy")}`;
         } else {
@@ -79,9 +97,11 @@ export function renderProjects(
         }
 
         const priority = document.createElement("p");
+        priority.classList.add("todo-priority");
         priority.textContent = `Priority: ${todo.priority}`;
 
         const editForm = document.createElement("form");
+        editForm.classList.add("edit-form");
 
         editForm.innerHTML = `
           <input name="title" type="text" value="${todo.title}" required>
@@ -115,9 +135,6 @@ export function renderProjects(
 
         todoDiv.appendChild(detailsDiv);
       }
-
-      
-
 
       projectDiv.appendChild(todoDiv);
     });
