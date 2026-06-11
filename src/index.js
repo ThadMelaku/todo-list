@@ -6,6 +6,8 @@ import {
   addTodoToProject,
   deleteTodo,
   toggleTodoComplete,
+  toggleTodoExpanded,
+  updateTodo,
   getActiveProjectId,
   setActiveProject,
 } from "./appController.js";
@@ -30,7 +32,9 @@ function renderApp() {
     getActiveProjectId(),
     handleDeleteTodo,
     handleToggleTodo,
-    handleSelectProject
+    handleSelectProject,
+    handleToggleDetails,
+    handleEditTodo
   );
 }
 
@@ -46,6 +50,16 @@ function handleToggleTodo(projectId, todoId) {
 
 function handleSelectProject(projectId) {
   setActiveProject(projectId);
+  renderApp();
+}
+
+function handleToggleDetails(projectId, todoId) {
+  toggleTodoExpanded(projectId, todoId);
+  renderApp();
+}
+
+function handleEditTodo(projectId, todoId, updatedTodo) {
+  updateTodo(projectId, todoId, updatedTodo);
   renderApp();
 }
 

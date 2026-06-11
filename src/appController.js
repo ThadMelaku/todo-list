@@ -55,12 +55,41 @@ function setActiveProject(projectId) {
   activeProjectId = projectId;
 }
 
+function toggleTodoExpanded(projectId, todoId) {
+  const project = projects.find((project) => project.id === projectId);
+
+  if (!project) return;
+
+  const todo = project.todos.find((todo) => todo.id === todoId);
+
+  if (!todo) return;
+
+  todo.expanded = !todo.expanded;
+}
+
+function updateTodo(projectId, todoId, updatedTodo) {
+  const project = projects.find((project) => project.id === projectId);
+
+  if (!project) return;
+
+  const todo = project.todos.find((todo) => todo.id === todoId);
+
+  if (!todo) return;
+
+  todo.title = updatedTodo.title;
+  todo.description = updatedTodo.description;
+  todo.dueDate = updatedTodo.dueDate;
+  todo.priority = updatedTodo.priority;
+}
+
 export {
   getProjects,
   addProject,
   addTodoToProject,
   deleteTodo,
   toggleTodoComplete,
+  toggleTodoExpanded,
+  updateTodo,
   getActiveProjectId,
   setActiveProject,
 };

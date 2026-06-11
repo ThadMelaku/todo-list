@@ -3,7 +3,9 @@ export function renderProjects(
   activeProjectId,
   onDeleteTodo,
   onToggleTodo,
-  onSelectProject
+  onSelectProject,
+  onToggleDetails,
+  onEditTodo
 ) {
   const content = document.querySelector("#content");
 
@@ -47,10 +49,12 @@ export function renderProjects(
 
       const todoText = document.createElement("span");
       todoText.textContent = `${todo.title} (${todo.priority})`;
+      todoText.addEventListener("click", () => {
+        onToggleDetails(project.id, todo.id);
+      });
 
       const deleteButton = document.createElement("button");
       deleteButton.textContent = "Delete";
-
       deleteButton.addEventListener("click", () => {
         onDeleteTodo(project.id, todo.id);
       });
@@ -58,6 +62,56 @@ export function renderProjects(
       todoDiv.appendChild(checkbox);
       todoDiv.appendChild(todoText);
       todoDiv.appendChild(deleteButton);
+
+      if (todo.expanded) {
+        const detailsDiv = document.createElement("div");
+
+        const description = document.createElement("p");
+        description.textContent = `Description: ${todo.description}`;
+
+        const dueDate = document.createElement("p");
+        dueDate.textContent = `Due: ${todo.dueDate}`;
+
+        const priority = document.createElement("p");
+        priority.textContent = `Priority: ${todo.priority}`;
+
+        const editForm = document.createElement("form");
+
+        editForm.innerHTML = `
+          <input name="title" type="text" value="${todo.title}" required>
+          <input name="description" type="text" value="${todo.description}">
+          <input name="dueDate" type="date" value="${todo.dueDate}">
+          <select name="priority">
+            <option value="low" ${todo.priority === "low" ? "selected" : ""}>Low</option>
+            <option value="medium" ${todo.priority === "medium" ? "selected" : ""}>Medium</option>
+            <option value="high" ${todo.priority === "high" ? "selected" : ""}>High</option>
+          </select>
+          <button type="submit">Save</button>
+        `;
+
+        editForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+
+          const formData = new FormData(editForm);
+
+          onEditTodo(project.id, todo.id, {
+            title: formData.get("title"),
+            description: formData.get("description"),
+            dueDate: formData.get("dueDate"),
+            priority: formData.get("priority"),
+          });
+        });
+
+        detailsDiv.appendChild(description);
+        detailsDiv.appendChild(dueDate);
+        detailsDiv.appendChild(priority);
+        detailsDiv.appendChild(editForm);
+
+        todoDiv.appendChild(detailsDiv);
+      }
+
+      
+
 
       projectDiv.appendChild(todoDiv);
     });
