@@ -5,6 +5,7 @@ import {
   addProject,
   addTodoToProject,
   deleteTodo,
+  toggleTodoComplete,
 } from "./appController.js";
 
 import { renderProjects } from "./domController.js";
@@ -22,11 +23,16 @@ addTodoToProject(
 );
 
 function renderApp() {
-  renderProjects(getProjects(), handleDeleteTodo);
+  renderProjects(getProjects(), handleDeleteTodo, handleToggleTodo);
 }
 
 function handleDeleteTodo(projectId, todoId) {
   deleteTodo(projectId, todoId);
+  renderApp();
+}
+
+function handleToggleTodo(projectId, todoId) {
+  toggleTodoComplete(projectId, todoId);
   renderApp();
 }
 

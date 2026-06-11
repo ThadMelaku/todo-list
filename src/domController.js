@@ -1,4 +1,4 @@
-export function renderProjects(projects, onDeleteTodo) {
+export function renderProjects(projects, onDeleteTodo, onToggleTodo) {
   const content = document.querySelector("#content");
 
   content.textContent = "";
@@ -14,6 +14,14 @@ export function renderProjects(projects, onDeleteTodo) {
     project.todos.forEach((todo) => {
       const todoDiv = document.createElement("div");
 
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = todo.completed;
+
+      checkbox.addEventListener("change", () => {
+        onToggleTodo(project.id, todo.id);
+      });
+
       const todoText = document.createElement("span");
       todoText.textContent = `${todo.title} (${todo.priority})`;
 
@@ -24,6 +32,7 @@ export function renderProjects(projects, onDeleteTodo) {
         onDeleteTodo(project.id, todo.id);
       });
 
+      todoDiv.appendChild(checkbox);
       todoDiv.appendChild(todoText);
       todoDiv.appendChild(deleteButton);
 
