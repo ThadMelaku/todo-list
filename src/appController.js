@@ -3,6 +3,8 @@ import { createTodo } from "./todo.js";
 
 const projects = [createProject("Default")];
 
+let activeProjectId = projects[0].id;
+
 function getProjects() {
   return projects;
 }
@@ -41,10 +43,24 @@ function toggleTodoComplete(projectId, todoId) {
   todo.completed = !todo.completed;
 }
 
+function getActiveProjectId() {
+  return activeProjectId;
+}
+
+function setActiveProject(projectId) {
+  const project = projects.find((project) => project.id === projectId);
+
+  if (!project) return;
+
+  activeProjectId = projectId;
+}
+
 export {
   getProjects,
   addProject,
   addTodoToProject,
   deleteTodo,
   toggleTodoComplete,
+  getActiveProjectId,
+  setActiveProject,
 };

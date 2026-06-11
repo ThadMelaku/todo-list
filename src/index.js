@@ -6,6 +6,8 @@ import {
   addTodoToProject,
   deleteTodo,
   toggleTodoComplete,
+  getActiveProjectId,
+  setActiveProject,
 } from "./appController.js";
 
 import { renderProjects } from "./domController.js";
@@ -23,7 +25,13 @@ addTodoToProject(
 );
 
 function renderApp() {
-  renderProjects(getProjects(), handleDeleteTodo, handleToggleTodo);
+  renderProjects(
+    getProjects(),
+    getActiveProjectId(),
+    handleDeleteTodo,
+    handleToggleTodo,
+    handleSelectProject
+  );
 }
 
 function handleDeleteTodo(projectId, todoId) {
@@ -33,6 +41,11 @@ function handleDeleteTodo(projectId, todoId) {
 
 function handleToggleTodo(projectId, todoId) {
   toggleTodoComplete(projectId, todoId);
+  renderApp();
+}
+
+function handleSelectProject(projectId) {
+  setActiveProject(projectId);
   renderApp();
 }
 
@@ -47,14 +60,27 @@ form.addEventListener("submit", (event) => {
   const priority = document.querySelector("#todo-priority").value;
 
   addTodoToProject(
-    trainingProjectId,
-    title,
-    description,
-    dueDate,
-    priority
-  );
+  getActiveProjectId(),
+  title,
+  description,
+  dueDate,
+  priority
+);
 
   form.reset();
+  renderApp();
+});
+
+const projectForm = document.querySelector("#project-form");
+
+projectForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const projectName = document.querySelector("#project-name").value;
+
+  addProject(projectName);
+
+  projectForm.reset();
   renderApp();
 });
 

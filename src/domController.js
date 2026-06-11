@@ -1,4 +1,10 @@
-export function renderProjects(projects, onDeleteTodo, onToggleTodo) {
+export function renderProjects(
+  projects,
+  activeProjectId,
+  onDeleteTodo,
+  onToggleTodo,
+  onSelectProject
+) {
   const content = document.querySelector("#content");
 
   content.textContent = "";
@@ -9,7 +15,24 @@ export function renderProjects(projects, onDeleteTodo, onToggleTodo) {
     const projectTitle = document.createElement("h2");
     projectTitle.textContent = project.name;
 
+    const projectButton = document.createElement("button");
+    projectButton.textContent = project.name;
+
+    if (project.id === activeProjectId) {
+      projectButton.textContent = `${project.name} (active)`;
+    }
+
+    projectButton.addEventListener("click", () => {
+      onSelectProject(project.id);
+    });
+
     projectDiv.appendChild(projectTitle);
+    projectDiv.appendChild(projectButton);
+
+    if (project.id !== activeProjectId) {
+      content.appendChild(projectDiv);
+      return;
+    }
 
     project.todos.forEach((todo) => {
       const todoDiv = document.createElement("div");
