@@ -1,3 +1,5 @@
+import { format, parseISO } from "date-fns";
+
 export function renderProjects(
   projects,
   activeProjectId,
@@ -70,7 +72,11 @@ export function renderProjects(
         description.textContent = `Description: ${todo.description}`;
 
         const dueDate = document.createElement("p");
-        dueDate.textContent = `Due: ${todo.dueDate}`;
+        if (todo.dueDate) {
+          dueDate.textContent = `Due: ${format(parseISO(todo.dueDate), "MMM d, yyyy")}`;
+        } else {
+          dueDate.textContent = "Due: None";
+        }
 
         const priority = document.createElement("p");
         priority.textContent = `Priority: ${todo.priority}`;
