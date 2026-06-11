@@ -5,6 +5,24 @@
   <title>Todo List</title>
 </head>
 <body>
+  <h1>Todo List</h1>
+
+  <form id="todo-form">
+    <input id="todo-title" type="text" placeholder="Title" required>
+
+    <input id="todo-description" type="text" placeholder="Description">
+
+    <input id="todo-due-date" type="date">
+
+    <select id="todo-priority">
+      <option value="low">Low</option>
+      <option value="medium" selected>Medium</option>
+      <option value="high">High</option>
+    </select>
+
+    <button type="submit">Add Todo</button>
+  </form>
+
   <div id="content"></div>
 </body>
 </html>

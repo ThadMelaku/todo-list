@@ -36,4 +36,26 @@ function handleToggleTodo(projectId, todoId) {
   renderApp();
 }
 
+const form = document.querySelector("#todo-form");
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const title = document.querySelector("#todo-title").value;
+  const description = document.querySelector("#todo-description").value;
+  const dueDate = document.querySelector("#todo-due-date").value;
+  const priority = document.querySelector("#todo-priority").value;
+
+  addTodoToProject(
+    trainingProjectId,
+    title,
+    description,
+    dueDate,
+    priority
+  );
+
+  form.reset();
+  renderApp();
+});
+
 renderApp();
